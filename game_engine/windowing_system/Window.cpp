@@ -100,8 +100,17 @@ bool Window::isRun() {
     return m_isRun;
 }
 
+void Window::onCreate() {
+
+}
+
+void Window::onUpdate() {
+
+}
+
 void Window::onDestroy() {
     m_isRun = false;
 }
+
 
 

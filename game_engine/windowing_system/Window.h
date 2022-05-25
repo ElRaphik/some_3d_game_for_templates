@@ -34,8 +34,8 @@ public:
     bool isRun();
 
     // EVENTS
-    virtual void onCreate() = 0;
-    virtual void onUpdate() = 0;
+    virtual void onCreate();
+    virtual void onUpdate();
     virtual void onDestroy();
 
     ~Window();
