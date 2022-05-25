@@ -5,7 +5,7 @@
 #ifndef SOME_3D_GAME_WINDOW_H
 #define SOME_3D_GAME_WINDOW_H
 #pragma once
-#include <Windows.h>
+#include <windows.h>
 
 class Window {
 
