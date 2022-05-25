@@ -4,7 +4,8 @@
 
 #include "Window.h"
 
-Window* window = nullptr;
+// not needed anymore since we changed the way we use window in WndProc
+//Window* window = nullptr;
 
 Window::Window() {
 
@@ -15,14 +16,18 @@ Window::~Window() {
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam){
+    Window* eWindow;
     switch (msg) {
         case WM_CREATE:
             // Event fired when the window will be created
-            window->onCreate();
+            eWindow = (Window*)((LPCREATESTRUCT)lparam)->lpCreateParams; // This snippet of code will get the "this" pointer passed in CreateWindowExA
+            SetWindowLongPtrA(hwnd, GWLP_USERDATA, (LONG_PTR) eWindow); // This snippet of code, instead, wille save the pointer "this" in a special structure data identified by hwnd
+            eWindow->onCreate();
             break;
         case WM_DESTROY: {
             // Event fired when the window will be destroyed
-            window->onDestroy();
+            eWindow = (Window*) GetWindowLongA(hwnd, GWLP_USERDATA); // This snippet of code will recover the pointer "this" from the special structure data identified by hwnd
+            eWindow->onDestroy();
             ::PostQuitMessage(0);
             break;
         }
@@ -50,12 +55,13 @@ bool Window::init() {
 
     if(!::RegisterClassEx(&wc)) return false; // if registration of previous object fails, return false
 
-    if(!window) window = this;
+    // not needed since we changed the way we use window in WndProc
+//    if(!window) window = this;
 
     // Creation of the window
     m_hwnd = ::CreateWindowExA(WS_EX_OVERLAPPEDWINDOW, TEXT(wc.lpszClassName), TEXT("DirectX Application"),
                       WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1024, 768,
-                      nullptr, nullptr, nullptr, nullptr);
+                      nullptr, nullptr, nullptr, this);
 
     if(!m_hwnd) return false; // if the creation fails (m_hwnd==0) return false
 
@@ -76,7 +82,7 @@ bool Window::broadcast() {
         DispatchMessageA(&msg);
     }
 
-    window->onUpdate();
+    this->onUpdate();
 
     Sleep(0);
 
