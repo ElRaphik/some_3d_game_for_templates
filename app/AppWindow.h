@@ -5,6 +5,7 @@
 #ifndef SOME_3D_GAME_APPWINDOW_H
 #define SOME_3D_GAME_APPWINDOW_H
 #include "../game_engine/windowing_system/Window.h"
+#include "../game_engine/graphics_engine/GraphicsEngine.h"
 
 class AppWindow: public Window {
 public:
