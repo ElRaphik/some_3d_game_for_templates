@@ -22,6 +22,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam){
             // Event fired when the window will be created
             eWindow = (Window*)((LPCREATESTRUCT)lparam)->lpCreateParams; // This snippet of code will get the "this" pointer passed in CreateWindowExA
             SetWindowLongPtrA(hwnd, GWLP_USERDATA, (LONG_PTR) eWindow); // This snippet of code, instead, wille save the pointer "this" in a special structure data identified by hwnd
+            eWindow->setHWND(hwnd);
             eWindow->onCreate();
             break;
         case WM_DESTROY: {
@@ -110,6 +111,16 @@ void Window::onUpdate() {
 
 void Window::onDestroy() {
     m_isRun = false;
+}
+
+RECT Window::getClientWindowRect() {
+    RECT rc;
+    ::GetClientRect(this->m_hwnd, &rc);
+    return rc;
+}
+
+void Window::setHWND(HWND hwnd) {
+    m_hwnd = hwnd;
 }
 
 

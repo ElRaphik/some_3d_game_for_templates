@@ -6,6 +6,7 @@
 #define SOME_3D_GAME_APPWINDOW_H
 #include "../game_engine/windowing_system/Window.h"
 #include "../game_engine/graphics_engine/GraphicsEngine.h"
+#include "../game_engine/graphics_engine/swap_chain/SwapChain.h"
 
 class AppWindow: public Window {
 public:
@@ -14,6 +15,9 @@ public:
     void onUpdate() override;
 
     void onDestroy() override;
+
+private:
+    SwapChain* m_swap_chain;
 
 };
 

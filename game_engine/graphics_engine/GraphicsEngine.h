@@ -8,6 +8,8 @@
 
 #include <d3d11.h>
 
+class SwapChain;
+
 class GraphicsEngine {
 public:
     // STATIC METHODS
@@ -31,10 +33,17 @@ public:
     bool release();
     ~GraphicsEngine();
 
+    SwapChain* createSwapChain();
+
 private:
     ID3D11Device* m_d3dDevice;
     D3D_FEATURE_LEVEL m_featureLevel;
     ID3D11DeviceContext* m_immContext;
+    IDXGIDevice* m_dxgi_device;
+    IDXGIAdapter* m_dxgi_adapter;
+    IDXGIFactory* m_dxgi_factory;
+
+    friend class SwapChain;
 };
 
 
