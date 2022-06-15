@@ -36,6 +36,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam){
         default:
             return ::DefWindowProcA(hwnd, msg, wparam, lparam);
     }
+    return NULL;
 }
 
 bool Window::init() {
@@ -78,14 +79,14 @@ bool Window::init() {
 bool Window::broadcast() {
     MSG msg;
 
+    this->onUpdate();
+
     while(::PeekMessageA(&msg, nullptr, 0, 0, PM_REMOVE) > 0) {
         TranslateMessage(&msg);
         DispatchMessageA(&msg);
     }
 
-    this->onUpdate();
-
-    Sleep(0);
+    Sleep(1);
 
     return true;
 }

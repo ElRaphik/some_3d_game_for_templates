@@ -21,6 +21,7 @@ bool SwapChain::init(HWND hwnd, UINT width, UINT height) {
     descriptor.BufferDesc.Height = height;
     descriptor.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     descriptor.BufferDesc.RefreshRate.Numerator = 60;
+    descriptor.BufferDesc.RefreshRate.Denominator = 1;
     descriptor.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     descriptor.OutputWindow = hwnd;
     descriptor.SampleDesc.Count = 1;
@@ -30,7 +31,20 @@ bool SwapChain::init(HWND hwnd, UINT width, UINT height) {
     // create the swap chain for the window we want, on our device, with our descriptor
     HRESULT res = GraphicsEngine::get()->m_dxgi_factory->CreateSwapChain(device, &descriptor, &m_swap_chain);
 
-    return !FAILED(res);
+    if(FAILED(res)) return false;
+
+    ID3D11Texture2D* buffer = nullptr;
+    res = m_swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buffer);
+
+    if(FAILED(res)) return false;
+
+    // FIXME 01: line below fails, try to investigate why
+    res = device->CreateRenderTargetView(buffer, NULL, &m_rtv);
+    buffer->Release();
+
+    if(FAILED(res)) return false;
+
+    return true;
 }
 
 bool SwapChain::release() {
@@ -41,4 +55,10 @@ bool SwapChain::release() {
 
 SwapChain::~SwapChain() {
 
+}
+
+bool SwapChain::present(bool vsync) {
+    m_swap_chain->Present(vsync, NULL);
+
+    return true;
 }

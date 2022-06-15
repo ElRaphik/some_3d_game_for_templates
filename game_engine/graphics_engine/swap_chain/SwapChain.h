@@ -4,9 +4,11 @@
 
 #ifndef SOME_3D_GAME_SWAPCHAIN_H
 #define SOME_3D_GAME_SWAPCHAIN_H
+#pragma once
 
 #include <d3d11.h>
 
+class DeviceContext;
 
 class SwapChain {
 public:
@@ -23,8 +25,14 @@ public:
     bool release();
     ~SwapChain();
 
+    bool present(bool vsync);
+
 private:
     IDXGISwapChain* m_swap_chain;
+    ID3D11RenderTargetView* m_rtv;
+    ID3D11DepthStencilView* m_dsv;
+
+    friend class DeviceContext;
 };
 
 

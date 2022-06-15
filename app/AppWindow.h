@@ -7,6 +7,7 @@
 #include "../game_engine/windowing_system/Window.h"
 #include "../game_engine/graphics_engine/GraphicsEngine.h"
 #include "../game_engine/graphics_engine/swap_chain/SwapChain.h"
+#include "../game_engine/graphics_engine/device_context/DeviceContext.h"
 
 class AppWindow: public Window {
 public:

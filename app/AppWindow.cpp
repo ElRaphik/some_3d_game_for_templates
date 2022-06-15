@@ -10,11 +10,14 @@ void AppWindow::onCreate() {
     m_swap_chain = GraphicsEngine::get()->createSwapChain();
 
     RECT rc = getClientWindowRect();
-    m_swap_chain->init(m_hwnd, rc.right - rc.left, rc.top - rc.bottom);
+    m_swap_chain->init(m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 }
 
 void AppWindow::onUpdate() {
     Window::onUpdate();
+    GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTarget(m_swap_chain,
+                                                                          1, 0, 0, 1);
+    m_swap_chain->present(true);
 }
 
 void AppWindow::onDestroy() {
